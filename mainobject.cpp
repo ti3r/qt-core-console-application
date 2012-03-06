@@ -10,14 +10,21 @@ MainObject::MainObject(QObject *parent) :
 
 void MainObject::onAppStarted()
 {
-    int x = 2000;
+    int x = 15000;
     printf("Application Started!!!!\n");
-    printf("Scheduling close for 2 secs!!!!\n");
-    QTimer::singleShot(x, this, SLOT(closeApplication()));
+    printf("Connecting close Signals and slots\n");
+    connect(this,SIGNAL(exitApplication(int)),SLOT(onCloseApplication(int)));
+    printf("Scheduling exitApplication signal for %i millis\n",x);
+    QTimer::singleShot(x,this,SLOT(scheduleAutoClose()));
 }
 
-void MainObject::closeApplication()
+void MainObject::onCloseApplication(int retCode)
 {
-    printf("Closing application!!!!\n");
-    QCoreApplication::exit(0);
+    printf("Application closed with return code %i\n",retCode);
+    QCoreApplication::exit(retCode);
+}
+
+void MainObject::scheduleAutoClose()
+{
+    emit(exitApplication(0));
 }

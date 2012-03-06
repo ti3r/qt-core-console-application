@@ -10,10 +10,11 @@ public:
     explicit MainObject(QObject *parent = 0);
     
 signals:
-    
+    void exitApplication(int);
 public slots:
     void onAppStarted();
-    void closeApplication();
+    void onCloseApplication(int retCode);
+    void scheduleAutoClose();
 };
 
 #endif // MAINOBJECT_H
